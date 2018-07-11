@@ -2,6 +2,7 @@ from population import population
 import os
 import _csv as debugcsv #TO BE DELETED ONCE DEBUGGINS IS DONE
 
+class error(Exception): pass
 
 class user_interface():
 
@@ -9,7 +10,17 @@ class user_interface():
         self.menu = ["Select files for import","Correlation analysis"]
         self.population = population()
 
-    def menu_page(self): #Todo exceptions for non-integer input
+    def menu_page(self):
+        """
+        Todo: Fix this!!!
+        """
+        try:
+            self.process_menu_page()
+        except error:
+            print("Please input in a valid digit or 'q'")
+            self.menu_page()
+
+    def process_menu_page(self): #Todo exceptions for non-integer input
         for i in range(len(self.menu)):
             print(i+1, self.menu[i])
         print('\nType "q" to quit')
@@ -21,9 +32,10 @@ class user_interface():
             elif n == str(2):
                 self.analysis()
             else:
-                raise Exception
+                raise error()
 
     def file_import(self):
+        #todo add a back key
         directory_csv=[file for file in os.listdir() if file.endswith(".csv")]
         for i in range(len(directory_csv)):
             print(i+1, directory_csv[i])
@@ -51,4 +63,4 @@ class user_interface():
 
 if __name__ == '__main__':
     test = user_interface()
-    test.menu_page()
+    test.process_menu_page()
