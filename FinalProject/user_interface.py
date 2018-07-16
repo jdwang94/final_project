@@ -84,7 +84,8 @@ class user_interface():
             self.process_view_data()
         elif n == str(4):
             self.csv_output()
-            print("file output done")
+            file_directory = os.getcwd() + "\output.csv"
+            print("File output completed. Saved at %s" %file_directory)
             self.process_view_data()
         elif n == 'q':
             quit()
@@ -98,6 +99,14 @@ class user_interface():
         Creates an output csv file, based on all the csv files imported into the system
         """
         fh = open("output.csv",'w')
+        for i in range(len(self.population.columns)):
+            if i != len(self.population.columns)-1:
+                fh.write(str(self.population.columns[i]))
+                fh.write(",")
+            else:
+                fh.write(str(self.population.columns[i]))
+                fh.write("\n")
+
         for i in range(len(self.population.data)):
             for j in range(len(self.population.data[i])):
                 if j != len(self.population.data[i])-1:
