@@ -9,6 +9,7 @@ class user_interface():
 
     def __init__(self):
         self.menu = ["Select files for import","View Data","Correlation analysis"]
+        self.view_data_options = ['View countries', 'View variables', 'View entire dataset', 'Output dataset as a csv file']
         self.population = population()
 
     def menu_page(self):
@@ -25,7 +26,7 @@ class user_interface():
         """
         Prints menu options for the user
         """
-        self.print_options(self.menu)
+        self.print_options(self.menu,1)
 
         """
         Asks for user input. Then redirects to the appropriate function.
@@ -43,7 +44,6 @@ class user_interface():
         else:
             raise InputError("Please input a valid digit or 'q'")
 
-
     def view_data(self):
         """
         Runs function "process_view_page". Exception deals with invalid user inputs.
@@ -57,6 +57,7 @@ class user_interface():
             except InputError as ex:
                 print(ex)
                 self.view_data()
+
         else:
             print("\nThere is no imported data to view. Please import in some data before trying to view data")
             self.menu_page()
@@ -65,9 +66,7 @@ class user_interface():
         """
         Prints view_data options for the user
         """
-        view_data_options = ['View countries','View variables','View entire dataset', 'Output dataset as a csv file']
-        self.print_options(view_data_options)
-        print('Type "b" to back')
+        self.print_options(self.view_data_options,2)
 
         """
          Asks for user input. Then redirects to the appropriate function.
@@ -76,13 +75,17 @@ class user_interface():
 
         if n == str(1):
             self.print_options(self.population.list_of_countries)
+            self.process_view_data()
         elif n == str(2):
             self.print_options(self.population.columns)
+            self.process_view_data()
         elif n == str(3):
             print(self.population)
+            self.process_view_data()
         elif n == str(4):
             self.csv_output()
             print("file output done")
+            self.process_view_data()
         elif n == 'q':
             quit()
         elif n == 'b':
@@ -106,44 +109,56 @@ class user_interface():
         fh.close()
 
     def file_import(self):
+        try:
+            self.process_file_import()
+        except InputError as ex:
+            print(ex)
+            self.file_import()
+
+    def process_file_import(self):
         """
         Prints file_import options for the user
         """
         directory_csv = [file for file in os.listdir() if file.endswith(".csv")]
-        self.print_options(directory_csv)
-        print('Type "b" to back')
+        self.print_options(directory_csv,2)
 
         """
-        Asks for user input. Then redirects to the appropriate function.
+        Asks for user input. Then imports csv file based on user's input.
         """
         n = (input("Which csv would you like to import? Please input the corresponding integer:"))
-        if n != 'q' and n != 'b' and int(n) <= len(directory_csv):
+
+        try:
+            n = int(n)
+        except:
+            pass
+
+        if isinstance(n, int) is True and n <= len(directory_csv):
             self.population.import_csv(directory_csv[int(n)-1])
 
             """Debug"""
-            myFile = open('debugging.csv', 'w',newline='')
+            myFile = open('debugging.csv', 'w', newline='')
             with myFile:
                 writer = debugcsv.writer(myFile)
                 writer.writerows(self.population.data)
 
             print(self.population)  #Debugging line
             """End of debugging"""
-
             self.file_import()
         elif n == 'q':
             quit()
         elif n == 'b':
             self.menu_page()
         else:
-            raise Exception
+            raise InputError("\nPlease input a valid digit, 'q' or 'b'")
 
     def analysis(self):
         pass
 
-    def print_options(self,list_of_options):
+    def print_options(self,list_of_options,k=0):
         """
         Args:
         'list_of_options' List: list of options which is to be displayed to the user.
+        'k' Int: Type of menu to be printed
 
         Returns:
         Prints a formatted menu options onto the user's screen
@@ -151,7 +166,12 @@ class user_interface():
         print("\n")
         for i in range(len(list_of_options)):
             print(i+1, list_of_options[i])
-        print('\nType "q" to quit')
+
+        if k == 1:
+            print("\nType 'q' to quit")
+        elif k == 2:
+            print("\nType 'q' to quit")
+            print("Type 'b' to back")
 
 if __name__ == '__main__':
     test = user_interface()

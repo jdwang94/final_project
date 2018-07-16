@@ -29,7 +29,7 @@ class population(csv):
             self.data = data_object.data
             self.list_of_countries = [data_object.data[i][0] for i in range(len(data_object.data))]
             self.columns.insert(0,data_object.columns[0])
-            logging.debug('Population is empty. Added %s into the population object' %filename)
+            logging.debug('Population is empty. Added (%s) into the population object' %filename)
 
         else:
             """
@@ -50,7 +50,7 @@ class population(csv):
                         self.data[-1].append(0)
                     for k in range(1,len(data_object.data[i])):
                         self.data[-1].append(data_object.data[i][k])
-                    logging.debug('New country %s found.' %data_object.data[i][0])
+                    logging.debug('New country (%s) found.' %data_object.data[i][0])
 
             """
             Data cleaning: Any missing data is set to the default value of 0
@@ -59,7 +59,7 @@ class population(csv):
                 no_of_lines = len(self.columns)
                 csv.data_cleaning(self,i,no_of_lines)
 
-        logging.debug('Added %s into the population object' %filename)
+        logging.debug('Added (%s) into the population object' %filename)
 
 """ For debugging """
 if __name__ == '__main__':

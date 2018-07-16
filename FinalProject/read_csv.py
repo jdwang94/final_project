@@ -10,13 +10,13 @@ class csv():
         self.data = []
         logging.basicConfig(filename="log.txt",
                             filemode='a',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                            format='%(asctime)s,%(msecs)d %(levelname)s %(message)s',
                             datefmt='%H:%M:%S',
                             level=logging.DEBUG)
 
     def extract_data(self,filename):
         fh = open(filename, 'r')
-        logging.debug('Attempting to extract %s' %filename)
+        logging.debug('Attempting to extract (%s)' %filename)
 
         """
         Extracts the columns title into "self.columns" & the dataset into "self.data"
@@ -50,7 +50,7 @@ class csv():
         """
         Debugging Line:
         """
-        logging.debug("Extracted %s" %filename)
+        logging.debug("Extracted (%s)" %filename)
 
         """
         Close File
