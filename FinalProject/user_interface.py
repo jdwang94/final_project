@@ -2,7 +2,8 @@ from population import population
 import os
 import _csv as debugcsv #TO BE DELETED ONCE DEBUGGINS IS DONE
 
-class error(Exception): pass
+class InputError(Exception):
+    pass
 
 class user_interface():
 
@@ -12,12 +13,12 @@ class user_interface():
 
     def menu_page(self):
         """
-        Todo: Fix this!!!
+        Runs function "process_menu_page". Exception deals with invalid user inputs.
         """
         try:
             self.process_menu_page()
-        except error:
-            print("Please input in a valid digit or 'q'")
+        except InputError as ex:
+            print(ex)
             self.menu_page()
 
     def process_menu_page(self):
@@ -30,21 +31,37 @@ class user_interface():
         Asks for user input. Then redirects to the appropriate function.
         """
         n = (input("What would you like to do? Please input the correpsonding integer:"))
-        while n != 'q':
-            if n == str(1):
+
+        if n == str(1):
                 self.file_import()
-            elif n == str(2):
+        elif n == str(2):
                 self.view_data()
-            elif n == str(3):
+        elif n == str(3):
                 self.analysis()
-            else:
-                raise error
+        elif n == str('q'):
+            quit()
+        else:
+            raise InputError("Please input a valid digit or 'q'")
 
-
-    def view_data2(self): pass
-    #todo: If dataset is empty, do not run the command
 
     def view_data(self):
+        """
+        Runs function "process_view_page". Exception deals with invalid user inputs.
+
+        If there is no csv file imported into the program, prompts user to import in a csv file before attempting
+        to view the imported data.
+        """
+        if self.population.data != []:
+            try:
+               self.process_view_data()
+            except InputError as ex:
+                print(ex)
+                self.view_data()
+        else:
+            print("\nThere is no imported data to view. Please import in some data before trying to view data")
+            self.menu_page()
+
+    def process_view_data(self):
         """
         Prints view_data options for the user
         """
@@ -71,12 +88,11 @@ class user_interface():
         elif n == 'b':
             self.menu_page()
         else:
-            raise Exception
+            raise InputError("Please input a valid digit, 'q' or 'b'")
 
     def csv_output(self):
         """
-        Ouputs a new csv file.
-        Its contents include all csv files that are extracted by previous functions.
+        Creates an output csv file, based on all the csv files imported into the system
         """
         fh = open("output.csv",'w')
         for i in range(len(self.population.data)):
@@ -93,7 +109,7 @@ class user_interface():
         """
         Prints file_import options for the user
         """
-        directory_csv=[file for file in os.listdir() if file.endswith(".csv")]
+        directory_csv = [file for file in os.listdir() if file.endswith(".csv")]
         self.print_options(directory_csv)
         print('Type "b" to back')
 
@@ -104,20 +120,20 @@ class user_interface():
         if n != 'q' and n != 'b' and int(n) <= len(directory_csv):
             self.population.import_csv(directory_csv[int(n)-1])
 
-            """debug"""
+            """Debug"""
             myFile = open('debugging.csv', 'w',newline='')
             with myFile:
                 writer = debugcsv.writer(myFile)
                 writer.writerows(self.population.data)
 
             print(self.population)  #Debugging line
-            """end of debugging"""
+            """End of debugging"""
 
             self.file_import()
         elif n == 'q':
             quit()
         elif n == 'b':
-            self.process_menu_page()
+            self.menu_page()
         else:
             raise Exception
 
@@ -130,12 +146,13 @@ class user_interface():
         'list_of_options' List: list of options which is to be displayed to the user.
 
         Returns:
-        Prints onto user's screen, a formatted Menu Page
+        Prints a formatted menu options onto the user's screen
         """
         print("\n")
         for i in range(len(list_of_options)):
             print(i+1, list_of_options[i])
         print('\nType "q" to quit')
+
 if __name__ == '__main__':
     test = user_interface()
-    test.process_menu_page()
+    test.menu_page()
