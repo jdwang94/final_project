@@ -58,11 +58,11 @@ class csv():
         fh.close()
     def data_cleaning(self,i,no_of_variables):
         """
-        Data cleaning: For data sets that are missing values/incomplete, appends a default value of '0'.
+        Data cleaning: For data sets that have missing values/incomplete, appends a default value of '0'.
 
         Arg:
         'i' list: Row of data that is to be cleaned
-        'no_of_lines' integer: No. of variables in the data set.
+        'no_of_lines' integer: No. of variables that are supposed to be in the data set.
 
         Returns:
         Cleaned row of data, where there are no missing values.
