@@ -1,14 +1,21 @@
 from population import population
 import os
 import _csv as debugcsv #TO BE DELETED ONCE DEBUGGINS IS DONE
+import shelve
+import logging
 
 class InputError(Exception):
     pass
 
+"""
+Potential additions:
+1. Clear data function
+"""
+
 class user_interface():
 
     def __init__(self):
-        self.menu = ["Select files for import","View Data","Correlation analysis"]
+        self.menu = ["Select files for import","View Data","Correlation analysis","Shelve Data"]
         self.view_data_options = ['View countries', 'View variables', 'View entire dataset', 'Output dataset as a csv file']
         self.population = population()
 
@@ -34,11 +41,13 @@ class user_interface():
         n = (input("What would you like to do? Please input the correpsonding integer:"))
 
         if n == str(1):
-                self.file_import()
+            self.file_import()
         elif n == str(2):
-                self.view_data()
+            self.view_data()
         elif n == str(3):
-                self.analysis()
+            self.analysis()
+        elif n == str(4):
+            self.save()
         elif n == str('q'):
             quit()
         else:
@@ -162,6 +171,42 @@ class user_interface():
 
     def analysis(self):
         pass
+
+    def save(self):
+        try:
+            self.process_save()
+        except InputError as ex:
+            print(ex)
+            self.save()
+
+    def process_save(self):
+        options = ["Save current dataset","Load previous dataset"]
+        self.print_options(options,2)
+
+        n = (input("What would you like to do? Please input the correpsonding integer:"))
+        sf = shelve.open("data")
+        if str(n) == "1":
+            sf['columns'] = self.population.columns
+            sf['data'] = self.population.data
+            sf['countries'] = self.population.list_of_countries
+            print("Data has been saved into a shelve file")
+            logging.debug("Current dataset saved")
+            self.save()
+
+        elif str(n) == "2":
+            self.population.columns = sf['columns']
+            self.population.data = sf['data']
+            self.population.list_of_countries = sf['countries']
+            print("Data has been loaded")
+            logging.debug("Dataset loaded from shelve file")
+            self.save()
+
+        elif n == 'q':
+            quit()
+        elif n == 'b':
+            self.menu_page()
+        else:
+            raise InputError("Please input a valid digit, 'q' or 'b'")
 
     def print_options(self,list_of_options,k=0):
         """
