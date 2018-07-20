@@ -3,6 +3,7 @@ import os
 import _csv as debugcsv #TO BE DELETED ONCE DEBUGGINS IS DONE
 import shelve
 import logging
+from SLR import regression
 
 class InputError(Exception):
     pass
@@ -10,12 +11,13 @@ class InputError(Exception):
 """
 Potential additions:
 1. Clear data function
+2. Document the save data function
 """
 
 class user_interface():
 
     def __init__(self):
-        self.menu = ["Select files for import","View Data","Correlation analysis","Shelve Data"]
+        self.menu = ["Select files for import","View Data","Simple Linear Regression","Shelve Data"]
         self.view_data_options = ['View countries', 'View variables', 'View entire dataset', 'Output dataset as a csv file']
         self.population = population()
 
@@ -170,7 +172,18 @@ class user_interface():
             raise InputError("\nPlease input a valid digit, 'q' or 'b'")
 
     def analysis(self):
-        pass
+        #Todo 1. Deal with user input exceptions. 2. Improve output 3. Have the code go back to the menu 4.Make some form of output for the equation.
+        #Todo 5. Have the code run for every single possible combintation?? (Seems quite cool)
+        self.print_options(self.population.columns[1:])
+        indep = int(input("Select X (Independent) Variable:"))
+        dep = int(input("Select Y (Dependent) Variable:"))
+        X = [i[indep] for i in self.population.data]
+        print("x",X)
+        Y = [i[dep] for i in self.population.data]
+        print("y",Y)
+        analysis = regression(X, Y, self.population.columns[indep], self.population.columns[dep])
+        analysis.plot()
+        analysis.SLR()
 
     def save(self):
         try:
@@ -208,6 +221,8 @@ class user_interface():
         else:
             raise InputError("Please input a valid digit, 'q' or 'b'")
 
+        sf.close()
+
     def print_options(self,list_of_options,k=0):
         """
         Args:
@@ -216,6 +231,8 @@ class user_interface():
 
         Returns:
         Prints a formatted menu options onto the user's screen
+        If k == 1, prints out a line that tells user to press 'q' to quit
+        If k == 2, prints out 2 lines that tells user to press 'q' to quit or 'b' to back
         """
         print("\n")
         for i in range(len(list_of_options)):
