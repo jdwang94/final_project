@@ -3,18 +3,13 @@ import os
 import _csv as debugcsv #TO BE DELETED ONCE DEBUGGINS IS DONE
 import shelve
 import logging
-from SLR import regression
+from regression_interface import regression_analysis
+from print_list import print_list
 
 class InputError(Exception):
     pass
 
-"""
-Potential additions:
-1. Clear data function
-2. Document the save data function
-"""
-
-class user_interface():
+class user_interface(print_list):
 
     def __init__(self):
         self.menu = ["Select files for import","View Data","Simple Linear Regression","Shelve Data"]
@@ -129,6 +124,10 @@ class user_interface():
         fh.close()
 
     def file_import(self):
+        """
+        Runs function "process_file_import". Exception deals with invalid user inputs.
+        """
+
         try:
             self.process_file_import()
         except InputError as ex:
@@ -172,20 +171,47 @@ class user_interface():
             raise InputError("\nPlease input a valid digit, 'q' or 'b'")
 
     def analysis(self):
-        #Todo 1. Deal with user input exceptions. 2. Improve output 3. Have the code go back to the menu 4.Make some form of output for the equation.
-        #Todo 5. Have the code run for every single possible combintation?? (Seems quite cool)
-        self.print_options(self.population.columns[1:])
-        indep = int(input("Select X (Independent) Variable:"))
-        dep = int(input("Select Y (Dependent) Variable:"))
-        X = [i[indep] for i in self.population.data]
-        print("x",X)
-        Y = [i[dep] for i in self.population.data]
-        print("y",Y)
-        analysis = regression(X, Y, self.population.columns[indep], self.population.columns[dep])
-        analysis.plot()
-        analysis.SLR()
+        """
+        Runs function "process_analysis". Exception deals with invalid user inputs.
 
-        self.analysis()
+        If there is no csv file imported into the program, prompts user to import in a csv file before attempting
+        to analyse the imported data.
+        """
+        if self.population.data != []:
+            try:
+                self.process_analysis()
+            except InputError as ex:
+                print(ex)
+                self.analysis()
+        else:
+            print("\nThere is no imported data to analyse. Please import in some data before trying to analyse data")
+            self.menu_page()
+
+    def process_analysis(self):
+        """
+        Prints analysis options for the user
+        """
+
+        menu_options = ["Simple Linear Regression","Generate correlation list"]
+        self.print_options(menu_options,2)
+
+        """
+        Asks for user input. Then performs analysis based on user's input.
+        """
+        n = (input("Which analysis would you like to do? Please input the corresponding integer:"))
+        regression_module = regression_analysis(self.population)
+        if n == str(1):
+            regression_module.plot_SLR()
+            self.analysis()
+        elif n == str(2):
+            regression_module.generate_correlation_list()
+            self.analysis()
+        elif n == str('q'):
+            quit()
+        elif n == str('b'):
+            self.menu_page()
+        else:
+            raise InputError("\nPlease input a valid digit, 'q' or 'b'")
 
     def save(self):
         try:
@@ -193,25 +219,36 @@ class user_interface():
         except InputError as ex:
             print(ex)
             self.save()
+        except KeyError:
+            print("No saved data to save/load. Please save some data before loading in data.")
+            self.menu_page()
 
     def process_save(self):
+        """
+        Saves or loads data base on user's input.
+        If there is no data in the population object, or no saved file, raise a KeyError
+        """
         options = ["Save current dataset","Load previous dataset"]
         self.print_options(options,2)
 
         n = (input("What would you like to do? Please input the correpsonding integer:"))
         sf = shelve.open("data")
+
         if str(n) == "1":
-            sf['columns'] = self.population.columns
-            sf['data'] = self.population.data
-            sf['countries'] = self.population.list_of_countries
-            print("Data has been saved into a shelve file")
-            logging.debug("Current dataset saved")
-            self.save()
+            if self.population.data != []:
+                sf['columns'] = self.population.columns
+                sf['data'] = self.population.data
+                sf['countries'] = self.population._list_of_countries
+                print("Data has been saved into a shelve file")
+                logging.debug("Current dataset saved")
+                self.save()
+            else:
+                raise KeyError
 
         elif str(n) == "2":
             self.population.columns = sf['columns']
             self.population.data = sf['data']
-            self.population.list_of_countries = sf['countries']
+            self.population._list_of_countries = sf['countries']
             print("Data has been loaded")
             logging.debug("Dataset loaded from shelve file")
             self.save()
@@ -225,26 +262,6 @@ class user_interface():
 
         sf.close()
 
-    def print_options(self,list_of_options,k=0):
-        """
-        Args:
-        'list_of_options' List: list of options which is to be displayed to the user.
-        'k' Int: Type of menu to be printed
-
-        Returns:
-        Prints a formatted menu options onto the user's screen
-        If k == 1, prints out a line that tells user to press 'q' to quit
-        If k == 2, prints out 2 lines that tells user to press 'q' to quit or 'b' to back
-        """
-        print("\n")
-        for i in range(len(list_of_options)):
-            print(i+1, list_of_options[i])
-
-        if k == 1:
-            print("\nType 'q' to quit")
-        elif k == 2:
-            print("\nType 'q' to quit")
-            print("Type 'b' to back")
 
 if __name__ == '__main__':
     test = user_interface()
