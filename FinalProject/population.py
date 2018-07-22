@@ -4,7 +4,16 @@ import logging
 class population(csv):
     def __init__(self):
         csv.__init__(self)
-        self.list_of_countries = []
+
+        """
+        self._list_of_countries is set as a protected variable (encapsulation). 
+        The main use of this list is to check if a country is already in the population.
+        If the country is in the population, the program would append the data to the existing country
+        Else, it would create a new row of data.
+        This is to prevent any tampering/printing function in the "user_interface" module.
+        """
+
+        self._list_of_countries = []
 
 
     def import_csv(self,filename):

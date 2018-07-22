@@ -185,6 +185,8 @@ class user_interface():
         analysis.plot()
         analysis.SLR()
 
+        self.analysis()
+
     def save(self):
         try:
             self.process_save()
