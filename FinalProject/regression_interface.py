@@ -6,8 +6,7 @@ class regression_analysis(print_list):
         self.population = (population_object)
 
     def plot_SLR(self):
-        # Todo 1. Deal with user input exceptions. 3. Have the code go back to the menu 4.Make some form of output for the equation.
-        # Todo 5. Have the code run for every single possible combintation?? (Seems quite cool)
+        # Todo 1. Deal with user input exceptions.
         self.print_options(self.population.columns[1:])
         indep = int(input("Select X (Independent) Variable:"))
         dep = int(input("Select Y (Dependent) Variable:"))

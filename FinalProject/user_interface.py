@@ -1,6 +1,5 @@
 from population import population
 import os
-import _csv as debugcsv #TO BE DELETED ONCE DEBUGGINS IS DONE
 import shelve
 import logging
 from regression_interface import regression_analysis
@@ -153,15 +152,6 @@ class user_interface(print_list):
 
         if isinstance(n, int) is True and n <= len(directory_csv):
             self.population.import_csv(directory_csv[int(n)-1])
-
-            """Debug"""
-            myFile = open('debugging.csv', 'w', newline='')
-            with myFile:
-                writer = debugcsv.writer(myFile)
-                writer.writerows(self.population.data)
-
-            print(self.population)  #Debugging line
-            """End of debugging"""
             self.file_import()
         elif n == 'q':
             quit()

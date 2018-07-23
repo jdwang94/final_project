@@ -7,10 +7,10 @@ class population(csv):
 
         """
         self._list_of_countries is set as a protected variable (encapsulation). 
-        The main use of this list is to check if a country is already in the population.
+        The main use of this list is to check (index) if a country is already in the population.
         If the country is in the population, the program would append the data to the existing country
         Else, it would create a new row of data.
-        This is to prevent any tampering/printing function in the "user_interface" module.
+        This is to prevent any accidental tampering with the function in the other module, which could mess up the indexing.
         """
 
         self._list_of_countries = []
