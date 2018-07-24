@@ -1,19 +1,19 @@
-from population import population
+from population import Population
 import os
 import shelve
 import logging
-from regression_interface import regression_analysis
-from print_list import print_list
+from regression_interface import RegressionAnalysis
+from print_list import PrintList
 
 class InputError(Exception):
     pass
 
-class user_interface(print_list):
+class UserInterface(PrintList):
 
     def __init__(self):
         self.menu = ["Select files for import","View Data","Simple Linear Regression","Shelve Data"]
         self.view_data_options = ['View countries', 'View variables', 'View entire dataset', 'Output dataset as a csv file']
-        self.population = population()
+        self.population = Population()
 
     def menu_page(self):
         """
@@ -190,7 +190,7 @@ class user_interface(print_list):
         Asks for user input. Then performs analysis based on user's input.
         """
         n = (input("Which analysis would you like to do? Please input the corresponding integer:"))
-        regression_module = regression_analysis(self.population)
+        regression_module = RegressionAnalysis(self.population)
         if n == str(1):
             regression_module.plot_SLR()
             self.analysis()
@@ -255,5 +255,5 @@ class user_interface(print_list):
 
 
 if __name__ == '__main__':
-    test = user_interface()
+    test = UserInterface()
     test.menu_page()

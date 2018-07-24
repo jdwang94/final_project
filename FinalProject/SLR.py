@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 Scatterplot & SLR code adapted from: https://www.easymachinelearning.net/introml/implementing-slr-with-python/
 """
 
-class regression():
+class Regression():
     def __init__(self,X,Y,name_X,name_Y):
         self.X = np.array(X)
         self.Y = np.array(Y)

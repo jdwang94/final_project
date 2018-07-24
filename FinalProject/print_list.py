@@ -1,4 +1,4 @@
-class print_list():
+class PrintList():
     def __init__(self):
         pass
 

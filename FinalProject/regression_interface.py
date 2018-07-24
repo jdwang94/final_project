@@ -1,11 +1,11 @@
-from SLR import regression
-from print_list import print_list
+from SLR import Regression
+from print_list import PrintList
 import os
 
 class InputError(Exception):
     pass
 
-class regression_analysis(print_list):
+class RegressionAnalysis(PrintList):
     def __init__(self,population_object):
         self.population = (population_object)
 
@@ -58,7 +58,7 @@ class regression_analysis(print_list):
             Code to run the regression, from "SLR.py"
             """
 
-            analysis = regression(X, Y, self.population.columns[indep], self.population.columns[dep])
+            analysis = Regression(X, Y, self.population.columns[indep], self.population.columns[dep])
             analysis.SLR()
 
         else:
@@ -80,7 +80,7 @@ class regression_analysis(print_list):
                                 Y.append(line[j])
                     #print((X))
                     #print((Y))
-                    analysis = regression(X, Y, self.population.columns[i], self.population.columns[j])
+                    analysis = Regression(X, Y, self.population.columns[i], self.population.columns[j])
                     r_square , equation = analysis.SLR_withoutplot()
                     r = r_square**0.5
                     correlation_data.append([str(r),str(self.population.columns[i]),str(self.population.columns[j]),str(equation)])

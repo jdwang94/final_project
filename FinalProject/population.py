@@ -1,9 +1,9 @@
-from read_csv import csv
+from read_csv import CSV
 import logging
 
-class population(csv):
+class Population(CSV):
     def __init__(self):
-        csv.__init__(self)
+        CSV.__init__(self)
 
         """
         self._list_of_countries is set as a protected variable (encapsulation). 
@@ -24,7 +24,7 @@ class population(csv):
         Arg:
         'filename' string: string name of the file to be read
         """
-        data_object = csv()  #Deal with exceptions
+        data_object = CSV()  #Deal with exceptions
         data_object.extract_data(filename)
 
         before_column = len(self.columns)
@@ -66,7 +66,7 @@ class population(csv):
             """
             for i in self.data:
                 no_of_lines = len(self.columns)
-                csv.data_cleaning(self,i,no_of_lines)
+                CSV.data_cleaning(self,i,no_of_lines)
 
         logging.debug('Added (%s) into the population object' %filename)
 

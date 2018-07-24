@@ -1,6 +1,6 @@
 import logging
 
-class csv():
+class CSV():
     def __init__(self):
         """
         Arg:
@@ -117,6 +117,6 @@ class csv():
 
 """ For debugging """
 if __name__ == '__main__':
-    k = csv()
+    k = CSV()
     k.extract_data("2015_genderinequality_csv_cleaned.csv")
     print(k)
