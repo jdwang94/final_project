@@ -23,7 +23,7 @@ class regression():
 
         # Printing Model
         equation = "Y = " + str(m) + ' * X + ' + str(b)
-        print(equation, r_square)
+        #print(equation, r_square)
 
         return r_square, equation
 

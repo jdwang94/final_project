@@ -1,5 +1,6 @@
 from SLR import regression
 from print_list import print_list
+import os
 
 class InputError(Exception):
     pass
@@ -77,8 +78,8 @@ class regression_analysis(print_list):
                             if (line[i] != 0) and (line[j] != 0):
                                 X.append(line[i])
                                 Y.append(line[j])
-                    print((X))
-                    print((Y))
+                    #print((X))
+                    #print((Y))
                     analysis = regression(X, Y, self.population.columns[i], self.population.columns[j])
                     r_square , equation = analysis.SLR_withoutplot()
                     r = r_square**0.5
@@ -103,5 +104,8 @@ class regression_analysis(print_list):
                     fh.write(str(correlation_data[i][j]))
                     fh.write("\n")
         fh.close()
+        file_directory = os.getcwd() + "\correlations.csv"
+        print("File output completed. Saved at %s" % file_directory)
+
 
 
