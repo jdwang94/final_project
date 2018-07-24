@@ -34,13 +34,14 @@ class regression():
         b = (self.Y.mean() * np.dot(self.X, self.X) - self.X.mean() * np.dot(self.X, self.Y)) / denominator
         yHat = m * self.X + b
         r_square = self.r_square(yHat)
+        N = len(self.X)
 
         #Plot
         plt.scatter(self.X, self.Y)
         plt.plot(self.X, yHat)
         plt.xlabel(self.name_X)
         plt.ylabel(self.name_Y)
-        plt.title("Line of best fit with R-Sqr = " + str(r_square))
+        plt.title("Line of best fit with R-Sqr = " + str(r_square) +" N = " + str(N))
         plt.grid(True)
         plt.show()
 
