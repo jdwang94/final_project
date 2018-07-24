@@ -65,10 +65,16 @@ class RegressionAnalysis(PrintList):
             raise InputError("\nPlease input a valid option")
 
     def generate_correlation_list(self):
+        """
+        Creates a correlation file
+        """
         fh = open('correlations.csv', "w")
         correlation_data = []
 
-
+        """
+        Runs correlation analysis for every possible variable combination
+        Data preparation: Removing any "0" values from the dataset
+        """
         for i in range(1,len(self.population.data[0])):
             for j in range(1,len(self.population.data[0])):
                 X = []
@@ -85,7 +91,13 @@ class RegressionAnalysis(PrintList):
                     r = r_square**0.5
                     correlation_data.append([str(r),str(self.population.columns[i]),str(self.population.columns[j]),str(equation)])
 
+        """
+        Sorting of data
+        """
         correlation_data.sort(reverse=True)
+        """
+        Writes into a csv file
+        """
         columns_title = ["r-value","Independent Value (X)","Dependent Value (Y)","Equation"]
         for i in range(len(columns_title)):
             if i != len(columns_title)-1:

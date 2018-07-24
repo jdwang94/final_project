@@ -205,6 +205,12 @@ class UserInterface(PrintList):
             raise InputError("\nPlease input a valid digit, 'q' or 'b'")
 
     def save(self):
+        """
+        Runs function "process_save". Exception deals with invalid user inputs.
+
+        If there is no csv file imported into the program, prompts user to import in a csv file before attempting
+        to save the imported data.
+        """
         try:
             self.process_save()
         except InputError as ex:
@@ -217,7 +223,7 @@ class UserInterface(PrintList):
     def process_save(self):
         """
         Saves or loads data base on user's input.
-        If there is no data in the population object, or no saved file, raise a KeyError
+        If there is no data in the population object, or no saved file, raise a KeyError (ie. nothing to save)
         """
         options = ["Save current dataset","Load previous dataset"]
         self.print_options(options,2)
