@@ -98,7 +98,7 @@ class RegressionAnalysis(PrintList):
         """
         Writes into a csv file
         """
-        columns_title = ["r-value","Independent Value (X)","Dependent Value (Y)","Equation"]
+        columns_title = ["r-value","Independent Variable (X)","Dependent Variable (Y)","Equation"]
         for i in range(len(columns_title)):
             if i != len(columns_title)-1:
                 fh.write(columns_title[i])
