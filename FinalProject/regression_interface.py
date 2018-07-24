@@ -1,4 +1,4 @@
-from SLR import Regression
+from SLR import Plot
 from print_list import PrintList
 import os
 
@@ -58,7 +58,7 @@ class RegressionAnalysis(PrintList):
             Code to run the regression, from "SLR.py"
             """
 
-            analysis = Regression(X, Y, self.population.columns[indep], self.population.columns[dep])
+            analysis = Plot(X, Y, self.population.columns[indep], self.population.columns[dep])
             analysis.SLR()
 
         else:
@@ -80,7 +80,7 @@ class RegressionAnalysis(PrintList):
                                 Y.append(line[j])
                     #print((X))
                     #print((Y))
-                    analysis = Regression(X, Y, self.population.columns[i], self.population.columns[j])
+                    analysis = Plot(X, Y, self.population.columns[i], self.population.columns[j])
                     r_square , equation = analysis.SLR_withoutplot()
                     r = r_square**0.5
                     correlation_data.append([str(r),str(self.population.columns[i]),str(self.population.columns[j]),str(equation)])
