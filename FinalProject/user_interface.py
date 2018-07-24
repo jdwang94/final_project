@@ -152,6 +152,7 @@ class user_interface(print_list):
 
         if isinstance(n, int) is True and n <= len(directory_csv):
             self.population.import_csv(directory_csv[int(n)-1])
+            print(self.population)
             self.file_import()
         elif n == 'q':
             quit()
