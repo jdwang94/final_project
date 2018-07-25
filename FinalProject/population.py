@@ -24,7 +24,7 @@ class Population(CSV):
         Arg:
         'filename' string: string name of the file to be read
         """
-        data_object = CSV()  #Deal with exceptions
+        data_object = CSV()
         data_object.extract_data(filename)
 
         before_column = len(self.columns)
