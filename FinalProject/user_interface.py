@@ -12,7 +12,8 @@ class UserInterface(PrintList):
 
     def __init__(self):
         self.menu = ["Select files for import","View Data","Simple Linear Regression","Shelve Data"]
-        self.view_data_options = ['View countries', 'View variables', 'View entire dataset', 'Output dataset as a csv file']
+        self.view_data_options = ['View countries', 'View variables', 'View entire dataset',
+                                  'Output dataset as a csv file']
         self.population = Population()
 
     def menu_page(self):

@@ -1,4 +1,4 @@
-r-value,Independent Value (X),Dependent Value (Y),Equation
+r-value,Independent Variable (X),Dependent Variable (Y),Equation
 1.0,2015 Human Development Index (HDI) (Value),2015 Human Development Index (HDI) ,Y = 1.0 * X + 0.0
 1.0,2015 Human Development Index (HDI) ,2015 Human Development Index (HDI) (Value),Y = 1.0 * X + 0.0
 0.9997356368783693,HDI rank,2014HDI rank,Y = 0.9993269408650222 * X + 0.07943981160335965
